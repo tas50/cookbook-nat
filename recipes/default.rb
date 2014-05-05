@@ -20,7 +20,7 @@ directory "/usr/local/sbin" do
 end
 
 template "/usr/local/sbin/configure-pat.sh" do
-  source "sudoers.erb"
+  source "configure-pat.sh.erb"
   mode 0744
   owner "ubuntu"
   group "admin"
