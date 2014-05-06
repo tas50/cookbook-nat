@@ -6,6 +6,14 @@ Cookbook to set up a non CentOS NAT instance for Amazon VPCs.
 
 Only tested on Ubuntu 14.04, but should work on earlier versions.
 
+## Attributes
+
+### nat::default
+
+Key                    | Type   | Description
+:----------------------|--------|----------------------------------------------------------
+`["nat"]["cidr"]`      | String | Source IP range to masquerade. Defaults to `10.10.0.0/16`
+
 ## Usage
 
 Just include `nat` in your node's `run_list`:

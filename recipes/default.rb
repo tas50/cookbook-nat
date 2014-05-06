@@ -20,10 +20,7 @@ end
 
 include_recipe "iptables"
 
-mac_address = `cat /sys/class/net/eth0/address`
-cidr = `curl -s http://169.254.169.254/latest/meta-data/network/interfaces/macs/#{mac_address}/vpc-ipv4-cidr-block`
-
 iptables_rule "masquerade" do
   source "masquerade.erb"
-  variables({ :src => cidr })
+  variables({ :cidr => node[:nat][:cidr] })
 end
