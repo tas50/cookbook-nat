@@ -12,20 +12,18 @@ execute "Disable Source/Dest. check" do
   EOH
 end
 
-directory "/usr/local/sbin" do
-  owner "ubuntu"
-  group "admin"
-  mode 0644
-  action :create
+include_recipe "sysctl"
+
+sysctl_param "net.ipv4.ip_forward" do
+  value 1
 end
 
-template "/usr/local/sbin/configure-pat.sh" do
-  source "configure-pat.sh.erb"
-  mode 0744
-  owner "ubuntu"
-  group "admin"
-end
+include_recipe "iptables"
 
-execute "Configure IP masquerading and forwarding" do
-  command "/usr/local/sbin/configure-pat.sh"
+mac_address = `cat /sys/class/net/eth0/address`
+cidr = `curl -s http://169.254.169.254/latest/meta-data/network/interfaces/macs/#{mac_address}/vpc-ipv4-cidr-block`
+
+iptables_rule "masquerade" do
+  source "masquerade.erb"
+  variables({ :src => cidr })
 end
